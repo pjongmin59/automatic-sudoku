@@ -1,48 +1,69 @@
 #include <cassert>
+#include <iostream>
+#include <algorithm>
 
-public class Block {
-private:
-    int number;         // 해당 블록에 할당된 숫자 
-                        // 0으로 초기화되며, 0일 시 미계산된 경우
-                        //                  0이 아닐 시 계산된 것이다.
-    bool fixed;         // true일 시 수정될 수 없다. 완전한 고정값
-    int candidate[9];   // 후보 숫자. 
 
-public:
-    // Constructors
-    Block()                                 : number(0),        fixed(false)    { }
-    Block(int number, bool fixed = false)   : number(number),   fixed(fixed)    { }
+// Constructors
+Block::Block()                                 : number(0),        fixed(false)    { }
+Block::Block(int number, bool fixed = false)   : number(number),   fixed(fixed)    { }
+Block::Block(int* candidates, int size)                   : number(0),        fixed(false)    {
+        setCandidates(candidates, size);
+}
 
-    // Getter and Setter
-    int getNumber() {
-		return this.number;
-	}
+// Getter and Setter
+int Block::getNumber() {
+	return this->number;
+}
 
-	void setNumber(int number) {
-		this.number = number;
-	}
+bool Block::setNumber(int number) {
+    if(!((number >= 0)&&(number <= 9)))
+         return false;   
+	this->number = number;
+    return true;       	
+}
 
-    bool getFixed(){
-        return this.fixed;
+bool Block::getFixed(){
+    return this->fixed;
+}
+
+bool Block::setFixed(bool fixed){
+    if(number == 0)
+        return false;
+    this->fixed = fixed;
+    return true;
+}
+
+bool Block::isFixed(){
+    return getFixed();
+}
+
+int* Block::getCandidates(){
+    return candidates;
+}
+
+bool Block::setCandidates(int* candidates, int size){
+    for (int i = 0; i < size; i++){
+        int candidateNumber = candidates[i];
+
+        if(!((candidateNumber >= 0)&&(candidateNumber <= 9)))
+            return false;
+
+        this->candidates[candidateNumber] = candidateNumber;
     }
 
-    void setFixed(bool fixed){
-        this.fixed = fixed;
-    }
-
-    bool isFixed(){
-        return getFixed();
-    }
-
-    int& getCandidate(){
-        return this.candidate;
-    }
-
-
+    return true;
 }
 
 
-int main(){
-    b1 = Block(1, true);
-    b2 = Block(2, true);
+    // Method
+void Block::printNumber(){
+    std::cout << number << std::endl;
 }
+
+void Block::printCandidates(){
+    for (int i = 1; i < 9; i++)
+        std::cout << candidates[i] << ", ";
+        
+    std::cout << candidates[9] << std::endl;
+}
+};
